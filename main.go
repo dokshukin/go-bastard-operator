@@ -42,9 +42,9 @@ func getReply(i int) (reply string) {
 		<body>
     <center>
     <h6>bastard operator version ` + Version +
-		" built " + Timestamp + `</h6>
-		<h3>The core issue is:</h3>
-		<h2>` + excuses[i] + `</h2>
+		" (build: " + Timestamp + `)</h6>
+		<h2>The core issue is:</2>
+		<h1>` + excuses[i] + `</1>
 		</center>
 		</body>
     </html>`
