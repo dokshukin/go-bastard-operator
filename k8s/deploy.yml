@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bastard-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bastard-operator
+  template:
+    metadata:
+      labels:
+        app: bastard-operator
+    spec:
+      containers:
+      - name: bastard-operator
+        image: ${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}
+        ports:
+          - name: http-port
+            containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bastard-operator
+spec:
+  type: NodePort
+  ports:
+    - name: http-bastard-operator
+      port: 8080
+      targetPort: 8080
+      nodePort: 30001
+  selector:
+    app: bastard-operator
