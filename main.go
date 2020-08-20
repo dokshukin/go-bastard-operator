@@ -13,10 +13,6 @@ var (
 )
 
 func main() {
-
-	fmt.Println("Version:\t", Version)
-	fmt.Println("build.Time:\t", Timestamp)
-
 	http.HandleFunc("/", bOperator)
 	http.ListenAndServe(":8080", nil)
 }
@@ -35,19 +31,18 @@ func random() int {
 func getReply(i int) (reply string) {
 	reply = `<!DOCTYPE html>
 		<html>
-		<head>
-		<title>Lame excuses from bastard operator</title>
-		<meta charset=\"utf-8\">
-		</head>
-		<body>
-    <center>
-    <h6>bastard operator version ` + Version +
-		" (build: " + Timestamp + `)</h6>
-		<h2>The core issue is:</2>
-		<h1>` + excuses[i] + `</1>
-		</center>
-		</body>
-    </html>`
+			<head>
+				<title>Lame excuses from bastard operator</title>
+				<meta charset=\"utf-8\">
+			</head>
+			<body>
+				<center>
+					<h6>bastard operator version ` + Version + " (build: " + Timestamp + `)</h6>
+					<h2>The core issue is:</h2>
+					<h1>` + excuses[i] + `</h1>
+				</center>
+			</body>
+		</html>`
 
 	return reply
 }
