@@ -77,7 +77,7 @@ spec:
         branch 'master'
       }
       environment {
-        DOCKERHUB_CREDS = credentials('docker-token')
+        DOCKERHUB_CREDS = credentials('docker-credentials')
       }
       steps {
         container('docker') {
@@ -91,7 +91,7 @@ spec:
 
     stage('Deploy') {
       environment {
-        DOCKERHUB_CREDS = credentials('docker-token')
+        DOCKERHUB_CREDS = credentials('docker-credentials')
         KUBE = credentials('k8s-service-account')
       }
       when {
