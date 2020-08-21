@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 	"net/http"
+	"text/template"
 	"time"
 )
 
@@ -19,30 +19,19 @@ func main() {
 
 func bOperator(w http.ResponseWriter, req *http.Request) {
 	rnd := random()
-	reply := getReply(rnd)
-	fmt.Fprintf(w, reply)
+	tmpl := template.Must(template.ParseFiles("templates/bofh.html"))
+	tmpl.Execute(w, struct {
+		Version   string
+		TimeStamp string
+		Excuse    string
+	}{
+		Version:   Version,
+		TimeStamp: Timestamp,
+		Excuse:    excuses[rnd],
+	})
 }
 
 func random() int {
 	rand.Seed(time.Now().Unix())
 	return rand.Intn(len(excuses) - 1)
-}
-
-func getReply(i int) (reply string) {
-	reply = `<!DOCTYPE html>
-		<html>
-			<head>
-				<title>Lame excuses from bastard operator</title>
-				<meta charset=\"utf-8\">
-			</head>
-			<body>
-				<center>
-					<h6>bastard operator version ` + Version + " (build: " + Timestamp + `)</h6>
-					<h2>The core issue is:</h2>
-					<h1>` + excuses[i] + `</h1>
-				</center>
-			</body>
-		</html>`
-
-	return reply
 }
