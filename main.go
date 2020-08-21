@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	Version   string
-	Timestamp string
+	version   string
+	timestamp string
 )
 
 func main() {
@@ -25,8 +25,8 @@ func bOperator(w http.ResponseWriter, req *http.Request) {
 		TimeStamp string
 		Excuse    string
 	}{
-		Version:   Version,
-		TimeStamp: Timestamp,
+		Version:   version,
+		TimeStamp: timestamp,
 		Excuse:    excuses[rnd],
 	})
 }
