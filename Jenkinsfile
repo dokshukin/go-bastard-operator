@@ -57,7 +57,6 @@ spec:
       }
       steps {
         container('golang') {
-          sh 'printenv | sort'
           sh "go build --ldflags='-X \"main.Version=${BUILD_NUMBER}\" -X \"main.Timestamp=${TIMESTAMP}\"' -o bastard_operator ."
         }
       }
@@ -75,7 +74,8 @@ spec:
         container('docker') {
           sh 'mkdir -p /kaniko/.docker'
           sh 'echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$DOCKERHUB_CREDS_HASH\"}}}" > /kaniko/.docker/config.json'
-          sh '/kaniko/executor --dockerfile ./Dockerfile --destination registry.docker.io/${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
+          sh 'cat /kaniko/.docker/config.json'
+          sh '/kaniko/executor --verbosity=trace --dockerfile=./Dockerfile --destination=registry.docker.io/${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
         }
       }
     }
