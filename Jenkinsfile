@@ -17,7 +17,7 @@ spec:
       tty: true
 
     - name: docker
-      image: 'gcr.io/kaniko-project/executor:latest'
+      image: 'gcr.io/kaniko-project/executor:debug'
       command:
         - cat
       tty: true
@@ -75,7 +75,7 @@ spec:
           sh 'mkdir -p /kaniko/.docker'
           sh 'echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$DOCKERHUB_CREDS_HASH\"}}}" > /kaniko/.docker/config.json'
           sh 'cat /kaniko/.docker/config.json'
-          sh '/kaniko/executor --dockerfile=./Dockerfile --destination=index.docker.io/${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
+          sh '/kaniko/executor --context=dir://./ --dockerfile=./Dockerfile --destination=${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
         }
       }
     }
