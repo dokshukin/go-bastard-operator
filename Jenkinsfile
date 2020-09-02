@@ -72,9 +72,12 @@ spec:
       }
       steps {
         container('docker') {
+          sh 'wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -O /busybox/jq'
+          sh 'chmod 755 /busybox/jq'
           sh 'mkdir -p /kaniko/.docker'
-          sh 'echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$DOCKERHUB_CREDS_HASH\"}}}" > /kaniko/.docker/config.json'
+          sh 'echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$DOCKERHUB_CREDS_HASH\"}}}" | jq -M . > /kaniko/.docker/config.json'
           sh 'cat /kaniko/.docker/config.json'
+          sh 'cat /kaniko/.docker/config.json | jq .'
           sh '/kaniko/executor --context=dir://./ --dockerfile=./Dockerfile --destination=${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
         }
       }
