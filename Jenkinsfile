@@ -17,7 +17,7 @@ spec:
       tty: true
 
     - name: docker
-      image: 'image: gcr.io/kaniko-project/executor:debug'
+      image: 'gcr.io/kaniko-project/executor:debug'
       command:
         - cat
       tty: true
