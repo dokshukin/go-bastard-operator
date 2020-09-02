@@ -69,13 +69,22 @@ spec:
       environment {
         DOCKERHUB_CREDS = credentials('docker-credentials')
         DOCKERHUB_CREDS_HASH = sh(script: "echo -n $DOCKERHUB_CREDS | base64", , returnStdout: true).trim()
+        DOCKER_AUTH_FILE = """
+          {
+            "auths":{
+              "https://index.docker.io/v1/":{
+                "auth":"$DOCKERHUB_CREDS_HASH"
+              }
+            }
+          }
+        """
       }
       steps {
         container('docker') {
           sh 'wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -O /busybox/jq'
           sh 'chmod 755 /busybox/jq'
           sh 'mkdir -p /kaniko/.docker'
-          sh 'echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$DOCKERHUB_CREDS_HASH\"}}}" | jq -M . > /kaniko/.docker/config.json'
+          sh 'echo ${DOCKER_AUTH_FILE} | jq -M . > /kaniko/.docker/config.json'
           sh 'cat /kaniko/.docker/config.json'
           sh 'cat /kaniko/.docker/config.json | jq .'
           sh '/kaniko/executor --context=dir://./ --dockerfile=./Dockerfile --destination=${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
