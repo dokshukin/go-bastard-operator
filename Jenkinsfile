@@ -75,7 +75,7 @@ spec:
         container('docker') {
           sh 'mkdir -p /kaniko/.docker'
           sh 'echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$DOCKERHUB_CREDS_HASH\"}}}" > /kaniko/.docker/config.json'
-          sh '/kaniko/executor --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination ${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
+          sh '/kaniko/executor --destination ${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
         }
       }
     }
