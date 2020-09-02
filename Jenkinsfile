@@ -17,14 +17,10 @@ spec:
       tty: true
 
     - name: docker
-      image: 'plugandtrade/jenkins-jnlp-dind-slave:latest'
+      image: 'image: gcr.io/kaniko-project/executor:debug'
       command:
         - cat
       tty: true
-      privileged: true
-      volumeMounts:
-        - name: dockersock
-          mountPath: /var/run/docker.sock
 
     - name: kubectl
       image: 'yonadev/jnlp-slave-k8s-helm:latest'
@@ -37,11 +33,6 @@ spec:
       command:
         - cat
       tty: true
-
-  volumes:
-  - name: dockersock
-    hostPath:
-      path: /var/run/docker.sock
 """
     }
   }
@@ -78,13 +69,13 @@ spec:
       }
       environment {
         DOCKERHUB_CREDS = credentials('docker-credentials')
+        DOCKERHUB_CREDS_HASH = sh(script: "echo -n $DOCKERHUB_CREDS | base64", , returnStdout: true).trim()
       }
       steps {
         container('docker') {
-          sh 'docker login -u ${DOCKERHUB_CREDS_USR} -p ${DOCKERHUB_CREDS_PSW}'
-          sh 'docker build -t ${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER} -t ${DOCKERHUB_CREDS_USR}/bastard-operator:latest .'
-          sh 'docker push ${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
-          sh 'docker push ${DOCKERHUB_CREDS_USR}/bastard-operator:latest'
+          sh 'mkdir -p /kaniko/.docker'
+          sh 'echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$DOCKERHUB_CREDS_HASH\"}}}" > /kaniko/.docker/config.json'
+          sh '/kaniko/executor --context $CI_PROJECT_DIR --dockerfile ./Dockerfile --destination ${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
         }
       }
     }
