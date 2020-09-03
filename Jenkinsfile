@@ -79,25 +79,16 @@ spec:
     stage('Deploy') {
       environment {
         DOCKERHUB_CREDS = credentials('docker-credentials')
-        K8S = credentials('87959107-2d0a-4485-958f-1e0b2970bf2b')
       }
       when {
         branch 'master'
       }
       steps {
-        container('golang') {
-          sh 'echo $K8S | wc -c'
-          sh 'echo $K8S | wc -l'
-          sh 'echo $K8S | head'
-          sh 'echo $K8S | head -c 500'
-          sh 'echo $K8S | tail'
-          sh 'echo $K8S | tail -c 500'
-        }
         kubernetesDeploy(
+          kubeconfigId('87959107-2d0a-4485-958f-1e0b2970bf2b'),
           configs: 'k8s/deploy.yml',
           enableConfigSubstitution: true
         )
-      }
     }
 
   }
