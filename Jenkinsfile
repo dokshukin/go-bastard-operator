@@ -97,15 +97,10 @@ spec:
         branch 'master'
       }
       steps {
-        container('envsubst') {
-          sh 'envsubst < k8s/deploy.yml > k8s/deploy_prepared.yml'
-          sh 'cat k8s/deploy_prepared.yml'
-        }
-        container('kubectl') {
-          sh 'mkdir ~/.kube'
-          sh 'echo "$KUBE" | base64 -d > ~/.kube/config'
-          sh 'kubectl -n jenkins -f k8s/deploy_prepared.yml apply'
-        }
+        kubernetesDeploy(
+          configs: 'k8s/deploy.yml',
+          enableConfigSubstitution: true
+        )
       }
     }
 
