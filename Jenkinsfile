@@ -89,6 +89,7 @@ spec:
           configs: 'k8s/deploy.yml',
           enableConfigSubstitution: true
         )
+      }
     }
 
   }
