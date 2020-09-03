@@ -83,7 +83,7 @@ spec:
         container('docker') {
           sh 'mkdir -p /kaniko/.docker'
           sh 'echo ${DOCKER_AUTH_FILE} > /kaniko/.docker/config.json'
-          sh '/kaniko/executor --context=dir://./ --dockerfile=./Dockerfile --destination=${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER}'
+          sh '/kaniko/executor --context=dir://./ --dockerfile=./Dockerfile --destination=${DOCKERHUB_CREDS_USR}/bastard-operator:${BUILD_NUMBER} --destination=${DOCKERHUB_CREDS_USR}/bastard-operator:latest'
         }
       }
     }
@@ -91,7 +91,6 @@ spec:
     stage('Deploy') {
       environment {
         DOCKERHUB_CREDS = credentials('docker-credentials')
-        KUBE = credentials('k8s-service-account')
       }
       when {
         branch 'master'
