@@ -89,9 +89,9 @@ spec:
           sh 'echo $K8S | wc -c'
           sh 'echo $K8S | wc -l'
           sh 'echo $K8S | head'
-          sh 'echo $K8S | head -100'
+          sh 'echo $K8S | head -c 500'
           sh 'echo $K8S | tail'
-          sh 'echo $K8S | tail -100'
+          sh 'echo $K8S | tail -c 500'
         }
         kubernetesDeploy(
           configs: 'k8s/deploy.yml',
