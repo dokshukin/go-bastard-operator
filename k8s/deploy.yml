@@ -26,11 +26,11 @@ kind: Service
 metadata:
   name: bastard-operator
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-  - name: http-bastard-operator
-    protocol: TCP
-    port: 80
-    targetPort: 8080
+    - name: http-bastard-operator
+      port: 8080
+      targetPort: 8080
+      nodePort: 30001
   selector:
     app: bastard-operator
