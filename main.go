@@ -19,7 +19,7 @@ func main() {
 
 func bOperator(w http.ResponseWriter, req *http.Request) {
 	rnd := random()
-	tmpl := template.Must(template.ParseFiles("templates/bofh.html"))
+	tmpl := template.Must(template.ParseFiles("./templates/bofh.html"))
 	tmpl.Execute(w, struct {
 		Version   string
 		TimeStamp string
