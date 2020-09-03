@@ -85,7 +85,7 @@ spec:
       }
       steps {
         kubernetesDeploy(
-          kubeconfigId('87959107-2d0a-4485-958f-1e0b2970bf2b'),
+          kubeconfigId: '87959107-2d0a-4485-958f-1e0b2970bf2b',
           configs: 'k8s/deploy.yml',
           enableConfigSubstitution: true
         )
