@@ -26,7 +26,7 @@ kind: Service
 metadata:
   name: bastard-operator
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - name: http-bastard-operator
     protocol: TCP
