@@ -21,18 +21,6 @@ spec:
       command:
         - cat
       tty: true
-
-    - name: kubectl
-      image: 'yonadev/jnlp-slave-k8s-helm:latest'
-      command:
-        - cat
-      tty: true
-
-    - name: envsubst
-      image: 'cirocosta/alpine-envsubst:latest'
-      command:
-        - cat
-      tty: true
 """
     }
   }
@@ -91,11 +79,20 @@ spec:
     stage('Deploy') {
       environment {
         DOCKERHUB_CREDS = credentials('docker-credentials')
+        K8S = credentials('87959107-2d0a-4485-958f-1e0b2970bf2b')
       }
       when {
         branch 'master'
       }
       steps {
+        container('golang') {
+          sh 'echo $K8S | wc -c'
+          sh 'echo $K8S | wc -l'
+          sh 'echo $K8S | head'
+          sh 'echo $K8S | head -100'
+          sh 'echo $K8S | tail'
+          sh 'echo $K8S | tail -100'
+        }
         kubernetesDeploy(
           configs: 'k8s/deploy.yml',
           enableConfigSubstitution: true
