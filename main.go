@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"text/template"
 	"time"
+	"fmt"
 )
 
 var (
@@ -14,6 +15,7 @@ var (
 
 func main() {
 	http.HandleFunc("/", bOperator)
+	fmt.Println("Starting go-bastard-operator on http://127.0.0.1:8080")
 	http.ListenAndServe(":8080", nil)
 }
 
